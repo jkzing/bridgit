@@ -11,7 +11,7 @@ app.use(function *(next) {
     let req = this.request;
     let requestUrl = req.url;
 
-    let authorization = createAuthorizationHeader(req);
+    let authorization = createHawkHeader(req);
     let options = {
         url: BASE_URL + requestUrl,
         headers: {
@@ -28,36 +28,30 @@ app.use(function *(next) {
 app.listen(3000);
 
 
-function createAuthorizationHeader(config) {
-    var options, contentType, payload = '',
-        artifact;
-    // console.log(config);
-    if (config.hasOwnProperty('data')) {
-        payload = JSON.parse(config.data);
+function createHawkHeader(request) {
+    let contentType, payload = '';
+    const url = BASE_URL + request.url;
+    const method = request.method;
+
+    if (request.hasOwnProperty('data')) payload = JSON.parse(request.data);
+
+    if (payload && request.headers.hasOwnProperty('Content-Type')) {
+        contentType = request.headers['Content-Type'];
     } else {
         contentType = 'text/plain';
     }
-    if (payload && config.headers.hasOwnProperty('Content-Type')) {
-        contentType = config.headers['Content-Type'];
-    }
 
-    options = {
+    let options = {
         credentials: {
-            id: 'oN9gmsz19foeli_RQ32Q824Ujzhao',
-            key: '5fcb24f335a64687bce4a3970e189d5a',
-            algorithm: 'sha256'
+            id: request.headers['Hawk-Auth-Id'],
+            key: request.headers['Hawk-Auth-Key'],
+            algorithm: request.headers['Hawk-Auth-Algorithm']
         },
         payload: payload,
         contentType: contentType
     };
 
-    var requestOptions = {
-        uri: BASE_URL + config.url,
-        method: config.method,
-        headers: {}
-    };
-
-    artifact = hawk.client.header(requestOptions.uri, requestOptions.method, options);
+    let artifact = hawk.client.header(url, method, options);
 
     return artifact.err ? undefined : artifact.field;
 }

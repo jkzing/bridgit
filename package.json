@@ -1,0 +1,24 @@
+{
+  "name": "auth-proxy",
+  "version": "1.0.0",
+  "description": "authentication proxy server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JingkaiZhao/authProxy.js.git"
+  },
+  "author": "JingkaiZhao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JingkaiZhao/authProxy.js/issues"
+  },
+  "homepage": "https://github.com/JingkaiZhao/authProxy.js#readme",
+  "dependencies": {
+    "hawk": "^5.0.0",
+    "koa": "^1.2.0",
+    "koa-request": "^1.0.0"
+  }
+}

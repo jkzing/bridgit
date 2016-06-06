@@ -1,7 +1,8 @@
 'use strict';
 const koa = require('koa');
 const request = require('koa-request');
-const hawk = require('hawk');
+
+const readConfiguration = require('./readConfiguration');
 
 let app = koa();
 
@@ -11,47 +12,29 @@ app.use(function *(next) {
     let req = this.request;
     let requestUrl = req.url;
 
-    let authorization = createHawkHeader(req);
+    let authConfig = readConfiguration();
+    const auth = require(`./auth_modules/${authConfig.module}`);
+    let authorization = auth(req, authConfig.origin, authConfig.options);
+
     let options = {
-        url: BASE_URL + requestUrl,
+        url: authConfig.origin + requestUrl,
         headers: {
             'Authorization': authorization
         }
     }
-
+    
+    console.log(`Sending request to: ${options.url}`);
     let response = yield request(options);
-    var info = JSON.parse(response.body);
+    console.log(`Request complete with ${response.statusCode} ${response.statusMessage}`);
+    let responseBody;
+    try {
+        responseBody = JSON.parse(response.body);
+    } catch (e) {
+        console.error(e);
+        responseBody = response.body;
+    }
 
-    this.body = info;
+    this.body = responseBody;
 });
 
 app.listen(3000);
-
-
-function createHawkHeader(request) {
-    let contentType, payload = '';
-    const url = BASE_URL + request.url;
-    const method = request.method;
-
-    if (request.hasOwnProperty('data')) payload = JSON.parse(request.data);
-
-    if (payload && request.headers.hasOwnProperty('Content-Type')) {
-        contentType = request.headers['Content-Type'];
-    } else {
-        contentType = 'text/plain';
-    }
-
-    let options = {
-        credentials: {
-            id: request.headers['Hawk-Auth-Id'],
-            key: request.headers['Hawk-Auth-Key'],
-            algorithm: request.headers['Hawk-Auth-Algorithm']
-        },
-        payload: payload,
-        contentType: contentType
-    };
-
-    let artifact = hawk.client.header(url, method, options);
-
-    return artifact.err ? undefined : artifact.field;
-}

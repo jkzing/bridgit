@@ -2,7 +2,7 @@
 const koa = require('koa');
 const request = require('koa-request');
 
-const readConfiguration = require('./readConfiguration');
+const readConfiguration = require('./lib/readConfiguration');
 
 let app = koa();
 
@@ -22,7 +22,7 @@ app.use(function *(next) {
             'Authorization': authorization
         }
     }
-    
+
     console.log(`Sending request to: ${options.url}`);
     let response = yield request(options);
     console.log(`Request complete with ${response.statusCode} ${response.statusMessage}`);

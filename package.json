@@ -1,24 +1,25 @@
 {
-  "name": "auth-proxy",
-  "version": "1.0.0",
-  "description": "A authorization proxy server",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JingkaiZhao/gothrough.js.git"
-  },
-  "author": "JingkaiZhao",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JingkaiZhao/gothrough.js/issues"
-  },
-  "homepage": "https://github.com/JingkaiZhao/gothrough.js#readme",
-  "dependencies": {
+    "name": "auth-proxy",
+    "version": "1.0.0",
+    "description": "A authorization proxy server",
+    "main": "server.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JingkaiZhao/gothrough.js.git"
+    },
+    "author": "JingkaiZhao",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/JingkaiZhao/gothrough.js/issues"
+    },
+    "homepage": "https://github.com/JingkaiZhao/gothrough.js#readme",
+    "dependencies": {
     "hawk": "^5.0.0",
     "koa": "^1.2.0",
     "koa-request": "^1.0.0"
-  }
+    }
 }

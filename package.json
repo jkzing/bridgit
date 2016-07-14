@@ -18,8 +18,9 @@
     },
     "homepage": "https://github.com/JingkaiZhao/gothrough.js#readme",
     "dependencies": {
-    "hawk": "^5.0.0",
-    "koa": "^1.2.0",
-    "koa-request": "^1.0.0"
+        "hawk": "^5.0.0",
+        "koa": "^1.2.0",
+        "koa-bodyparser": "^2.2.0",
+        "koa-request": "^1.0.0"
     }
 }

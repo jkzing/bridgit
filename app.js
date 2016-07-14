@@ -1,12 +1,15 @@
 'use strict';
 const koa = require('koa');
 const request = require('koa-request');
+const bodyParser = require('koa-bodyparser');
 
 const readConfiguration = require('./lib/readConfiguration');
 
 let app = koa();
 
 const BASE_URL = 'http://127.0.0.1:8000'
+
+app.use(bodyParser());
 
 app.use(function *(next) {
     let req = this.request;
@@ -17,9 +20,11 @@ app.use(function *(next) {
     let authorization = auth(req, authConfig.origin, authConfig.options);
 
     let options = {
+        method: req.method,
+        // form: req.body,
         url: authConfig.origin + requestUrl,
         headers: {
-            'Authorization': authorization
+            'Authorization': 'session-' + authorization
         }
     }
 

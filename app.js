@@ -21,7 +21,7 @@ app.use(function *(next) {
 
     let options = {
         method: req.method,
-        // form: req.body,
+        json: req.body,
         url: authConfig.origin + requestUrl,
         headers: {
             'Authorization': 'session-' + authorization

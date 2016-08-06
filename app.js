@@ -21,12 +21,12 @@ app.use(function *(next) {
 
     let options = {
         method: req.method,
-        json: req.body,
         url: authConfig.origin + requestUrl,
         headers: {
-            'Authorization': 'session-' + authorization
+            'Authorization': `session-${authorization}`
         }
     }
+    if (req.method === 'POST') options.json = req.body;
 
     console.log(`Sending request to: ${options.url}`);
     let response = yield request(options);

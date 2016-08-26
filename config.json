@@ -2,7 +2,7 @@
     "origin": "http://127.0.0.1:8000",
     "type": "hawk",
     "id": "18801790936",
-    "key": "8432cbe9e76b4778a3cd147328e05e18",
+    "key": "2a1acabf4344446fb0b8f8965e12ef60",
     "algorithm": "sha256",
     "encryptPayload": true
 }

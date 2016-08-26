@@ -26,7 +26,7 @@ app.use(function *(next) {
             'Authorization': `session-${authorization}`
         }
     }
-    if (req.method === 'POST') options.json = req.body;
+    if (req.method === 'POST' || req.method === 'PUT') options.json = req.body;
 
     console.log(`Sending request to: ${options.url}`);
     let response = yield request(options);

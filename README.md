@@ -1,6 +1,8 @@
-# About
+# bridgit
 
-Bridgit is a proxy server to forward normal http request to an authorized server.
+[![npm version](https://img.shields.io/badge/npm-v0.1.1-brightgreen.svg)](https://www.npmjs.com/package/bridgit)
+
+bridgit is a proxy server to forward normal http request to an authorized server.
 
 With different authorization protocol. (support hawk now)
 
@@ -23,7 +25,7 @@ So you can call your rest service at http://127.0.0.1:3000/api_url now.
 
 There are two ways to configure bridgit.
 
-#### global configurations
+### global configurations
 
 Run `bridgit config [--key=value]` in shell to make your configuration global.
 
@@ -33,7 +35,7 @@ bridgit config --origin=http://www.kezaihui.com --port=5000
 ```
 Then origin http://www.kezaihui.com and port 5000 will be written to configuration file, and will take effect afterwards.
 
-#### runtime configurations
+### runtime configurations
 
 You can also use arguments after bridgit command to specify configurations.
 

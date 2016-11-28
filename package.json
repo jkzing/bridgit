@@ -1,26 +1,31 @@
 {
-    "name": "auth-proxy",
-    "version": "1.0.0",
-    "description": "A authorization proxy server",
-    "main": "server.js",
-    "scripts": {
-        "start": "node app.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/JingkaiZhao/gothrough.js.git"
-    },
-    "author": "JingkaiZhao",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/JingkaiZhao/gothrough.js/issues"
-    },
-    "homepage": "https://github.com/JingkaiZhao/gothrough.js#readme",
-    "dependencies": {
-        "hawk": "^5.0.0",
-        "koa": "^1.2.0",
-        "koa-bodyparser": "^2.2.0",
-        "koa-request": "^1.0.0"
-    }
+  "name": "bridgit",
+  "version": "1.0.0",
+  "description": "A authorization proxy server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "bridgit": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JingkaiZhao/bridgit.git"
+  },
+  "author": "JingkaiZhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JingkaiZhao/bridgit/issues"
+  },
+  "homepage": "https://github.com/JingkaiZhao/bridgit#readme",
+  "dependencies": {
+    "hawk": "^5.0.0",
+    "koa": "^1.2.0",
+    "koa-bodyparser": "^2.2.0",
+    "koa-request": "^1.0.0",
+    "minimist": "^1.2.0",
+    "nconf": "^0.8.4"
+  }
 }

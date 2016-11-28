@@ -19,13 +19,16 @@ function createHawkHeader(request, origin, options) {
 
     let authOptions = {
         credentials: {
-            id: options.hawkAuthId,
-            key: options.hawkAuthKey,
-            algorithm: options.hawkAuthAlgorithm
+            id: options.id,
+            key: options.key,
+            algorithm: options.algorithm
         },
-        payload: payload,
         contentType: contentType
     };
+
+    if (options.encryptPayload) {
+        authOptions.payload = payload;
+    }
 
     let artifact = hawk.client.header(url, method, authOptions);
 

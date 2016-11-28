@@ -9,9 +9,11 @@
  *   --hawk-id
  *   --hawk-key
  */
+const _ = require('lodash');
 const argv = require('minimist')(process.argv.slice(2));
 
 const init = require('./lib/init');
+const configApp = require('./lib/configApp');
 const readConfiguration = require('./lib/readConfiguration');
 
 
@@ -20,7 +22,10 @@ const config = readConfiguration(argv);
 let commands = argv._;
 
 if (!!~commands.indexOf('config')) {
-    console.log(argv);
+    let cfg = _.defaultsDeep({}, argv);
+    delete cfg._;
+
+    configApp(cfg);
 } else {
     init(config);
 }

@@ -1,9 +1,0 @@
-{
-    "origin": "http://www.wozaihui.com",
-    "type": "hawk",
-    "prefix": "session-",
-    "id": "18801790936",
-    "key": "83847cc9be124901b1a4cb98ddd942d4",
-    "algorithm": "sha256",
-    "encryptPayload": true
-}

@@ -67,3 +67,8 @@ bridgit <config> [--origin=] # origin to forward
     [-hawk-algorithm=] # hawk algorithm
     [-hawk-encryptPayload=] # should include payload when encrypt
 ```
+
+# Todo
+
+* more user friendly log
+* more flexible configuration

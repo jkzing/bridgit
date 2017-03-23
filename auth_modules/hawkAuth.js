@@ -7,11 +7,11 @@ function createHawkHeader(request, origin, options) {
     const url = origin + urlWithoutQuery;
     const method = request.method;
 
-    if (request.hasOwnProperty('body') && Object.keys(request.body).length > 0) {
+    if (request.hasOwnProperty('body')) {
         payload = JSON.stringify(request.body);
     }
 
-    if (payload && request.headers.hasOwnProperty('content-type')) {
+    if (request.headers.hasOwnProperty('content-type')) {
         contentType = request.headers['content-type'];
     } else {
         contentType = 'text/plain';

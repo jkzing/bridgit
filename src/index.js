@@ -9,25 +9,26 @@
  *   --hawk-id
  *   --hawk-key
  */
-const _ = require('lodash');
-const argv = require('minimist')(process.argv.slice(2));
+const bridgit = require('commander');
 
-const initialize = require('./initialize');
-const configApp = require('./commands/config');
-const readConfiguration = require('./utils/readConfiguration');
+bridgit
+    .version('0.2.3');
 
-const config = readConfiguration(argv);
+bridgit
+    .command('hawk')
+    .description('start hawk authorization proxy server')
+    .option('-i, --id <id>', 'The hawk credential id')
+    .option('-k, --key <key>', 'The hawk credential key')
+    .option('-p, --port <port>', 'Which port should proxy server start on')
+    .option('-a, --algorithm <algorithm>', 'Which algorithm should hawk use to encrypt')
+    .option('-P, --prefix <prefix>', 'Prefix string that should be added to request header')
+    .option('-E, --encrypt-payload', 'Should hawk encrypt request body')
+    .action((options) => {
+        console.log(options.id, options.key);
+    });
 
-let commands = argv._;
 
 module.exports = function() {
-    if (!!~commands.indexOf('config')) {
-        let cfg = _.defaultsDeep({}, argv);
-        delete cfg._;
-
-        configApp(cfg);
-    } else {
-        initialize(config);
-    }
+    bridgit.parse(process.argv);
 }
 

@@ -28,7 +28,6 @@ module.exports = function() {
         configApp(cfg);
     } else {
         initialize(config);
-        console.log('new version');
     }
 }
 

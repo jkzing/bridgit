@@ -1,6 +1,6 @@
 # bridgit
 
-[![npm version](https://img.shields.io/badge/npm-v0.1.6-brightgreen.svg)](https://www.npmjs.com/package/bridgit)
+[![npm version](https://badge.fury.io/js/bridgit.svg)](https://badge.fury.io/js/bridgit)
 
 bridgit is a proxy server to forward normal http request to an authorized server.
 

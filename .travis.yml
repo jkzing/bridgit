@@ -1,0 +1,17 @@
+
+language: node_js
+node_js:
+- '7'
+before_install:
+- bash install.sh
+script:
+- npm publish
+branches:
+  only:
+  - master
+# deploy:
+#   provider: npm
+#   api_key: "1fb4c861-b112-40e1-863e-51f3984cb6b7"
+#   on:
+#     tags: true
+#     branch: master

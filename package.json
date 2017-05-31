@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JingkaiZhao/bridgit.git"
+    "url": "https://github.com/jkzing/bridgit.git"
   },
   "author": "JingkaiZhao",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JingkaiZhao/bridgit/issues"
+    "url": "https://github.com/jkzing/bridgit/issues"
   },
-  "homepage": "https://github.com/JingkaiZhao/bridgit#readme",
+  "homepage": "https://github.com/jkzing/bridgit#readme",
   "dependencies": {
     "hawk": "^3.x",
     "koa": "^1.2.0",

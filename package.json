@@ -4,7 +4,7 @@
   "description": "A authorization proxy server",
   "main": "bin/bridgit.js",
   "scripts": {
-    "start": "node bin/bridgit.js",
+    "start": "node bin/bridgit.js"
   },
   "files": [
     "src",

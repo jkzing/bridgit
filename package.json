@@ -5,11 +5,10 @@
   "main": "bin/bridgit.js",
   "scripts": {
     "start": "node bin/bridgit.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "src",
-    "bin/bridgit.js"
+    "bin/brdgit.js"
   ],
   "bin": {
     "bridgit": "bin/bridgit.js"

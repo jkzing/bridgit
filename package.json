@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/JingkaiZhao/bridgit#readme",
   "dependencies": {
-    "axios": "^0.16.1",
     "hawk": "^3.x",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",

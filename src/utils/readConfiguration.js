@@ -3,11 +3,11 @@
 const _ = require('lodash');
 const nconf = require('nconf');
 
-const clearUndefined = require('./utils').clearUndefined;
-const ENV = require('./../environments');
+const clearUndefined = require('./index').clearUndefined;
 
 const defaults = require.resolve('../config/defaults.json');
 const config = require.resolve('../config/config.json');
+
 
 module.exports = function readConfiguration(argv) {
     nconf.defaults(require(config));
@@ -15,7 +15,7 @@ module.exports = function readConfiguration(argv) {
     let library = nconf.get('library');
     let parseFunc;
     switch (library) {
-        case ENV.AUTH_TYPES.HAWK:
+        case 'hawk':
             parseFunc = parseHawk;
             break;
         default:
@@ -27,7 +27,7 @@ module.exports = function readConfiguration(argv) {
 function parseHawk(config, argv) {
     let argvOptions = parseArgv(argv);
     let opt =  _.defaultsDeep({}, argvOptions, {options: config}, {
-        module: ENV.AUTH_MODULES[nconf.get('library')],
+        module: nconf.get('library'),
         origin: nconf.get('origin'),
         port: nconf.get('port'),
         prefix: nconf.get('prefix'),

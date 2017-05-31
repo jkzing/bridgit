@@ -12,7 +12,7 @@ module.exports = function init(config) {
         let req = this.request;
         let requestUrl = req.url;
 
-        const auth = require(`../auth_modules/${config.module}`);
+        const auth = require(`../modules/${config.module}`);
         let authorization = auth(req, config.origin, config.options);
 
         let options = {

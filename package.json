@@ -2,20 +2,17 @@
   "name": "bridgit",
   "version": "0.1.8",
   "description": "A authorization proxy server",
-  "main": "index.js",
+  "main": "bin/bridgit.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node bin/bridgit.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "environments.js",
-    "index.js",
-    "auth_modules",
-    "config",
-    "lib"
+    "src",
+    "bin/bridgit.js"
   ],
   "bin": {
-    "bridgit": "./index.js"
+    "bridgit": "bin/bridgit.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +25,7 @@
   },
   "homepage": "https://github.com/JingkaiZhao/bridgit#readme",
   "dependencies": {
-    "hawk": "^5.0.0",
+    "hawk": "^3.x",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",
     "koa-request": "^1.0.0",

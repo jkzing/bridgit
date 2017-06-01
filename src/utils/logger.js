@@ -33,8 +33,13 @@ function success(msg, timestamp=false) {
 }
 
 function config(conf={}) {
-    log(
-        Object.entries(conf).map(([k, v]) => `${k}: ${v || ''}`).join('\n')
+    console.table(
+        Object
+            .entries(conf)
+            .map(([k, v]) => ({
+                key: k,
+                value: v,
+            }))
     );
 }
 

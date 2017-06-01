@@ -1,9 +1,6 @@
 {
     "origin": "http://127.0.0.1:8000",
-    "library": "hawk",
     "prefix": "",
-    "hawk": {
-        "algorithm": "sha256",
-        "encryptPayload": true
-    }
+    "algorithm": "sha256",
+    "encryptPayload": true
 }

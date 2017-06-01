@@ -1,25 +1,39 @@
-'use strict';
+const _ = require('lodash');
+const fs = require('fs');
+const logger = require('../utils/logger');
 
-const nconf = require('nconf');
+const configPath = require.resolve('../config/config.json');
 
-let configPath = require.resolve('../config/config.json');
-
-module.exports = function configApp(configuration) {
-    nconf.file(configPath);
-    let hawkReg = /^hawk\-/i;
-    for (let key in configuration) {
-        if (hawkReg.test(key)) {
-            let hawkKey = key.replace(hawkReg, '');
-            nconf.set(`hawk:${hawkKey}`, configuration[key]);
+let commands = {
+    get(key, value, options) {
+        // value should be ommited
+        let config = require(configPath);
+        if (key) {
+            logger.config({
+                [key]: config[key],
+            });
         } else {
-            nconf.set(key, configuration[key]);
+            logger.config(config);
         }
+    },
+    set(key, value, options) {
+        if (!key) return;
+        let nextConfig = _.merge(
+            require(configPath), 
+            {[key]: value}
+        );
+        fs.writeFileSync(configPath, JSON.stringify(nextConfig), {
+            encoding: 'utf-8',
+        });
     }
-    nconf.save(function(err) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        console.info('configuration saved');
-    });
+}
+
+
+module.exports = function action(cmd, key, value, options) {
+    if (!commands.hasOwnProperty(cmd)) {
+        error(`Command argument should be one of ${Object.keys(commands)}.`)
+        return;
+    }
+
+    commands[cmd](key, value, options);
 }

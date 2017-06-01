@@ -1,20 +1,35 @@
 const chalk = require('chalk');
 const log = console.log;
 
-function info(i) {
-    log(i);
+function getTimestamp() {
+    return new Date().toISOString().replace('T', ' ');
 }
 
-function warn(i) {
-    log(i);
+function colorful(msg, color='yellow', timestamp=false) {
+    if (!chalk[color]) {
+        throw new Error('chalk does not have this color');
+    }
+
+    if (timestamp) {
+        msg = `[${getTimestamp()}] - ${msg}`;
+    }
+    log(chalk[color](msg));
 }
 
-function error(i) {
-    log(i);
+function info(msg, timestamp=false) {
+    colorful(msg, 'cyan', timestamp);
 }
 
-function success(i) {
-    log(i);
+function warn(msg, timestamp=false) {
+    colorful(msg, 'grey', timestamp);
+}
+
+function error(msg, timestamp=false) {
+    colorful(msg, 'red', timestamp);
+}
+
+function success(msg, timestamp=false) {
+    colorful(msg, 'green', timestamp);
 }
 
 function config(conf={}) {
@@ -29,4 +44,5 @@ module.exports = {
     error,
     success,
     config,
+    colorful,
 }

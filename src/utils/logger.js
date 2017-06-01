@@ -19,7 +19,7 @@ function success(i) {
 
 function config(conf={}) {
     log(
-        Object.entries(conf).map(([k, v]) => `${k}: ${v}`).join('\n')
+        Object.entries(conf).map(([k, v]) => `${k}: ${v || ''}`).join('\n')
     );
 }
 

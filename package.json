@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/jkzing/bridgit#readme",
   "dependencies": {
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
     "hawk": "^3.x",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",

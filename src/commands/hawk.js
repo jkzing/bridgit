@@ -17,6 +17,5 @@ module.exports = function action(options) {
         _.omit(config, hawkOptionKeys), 
         {options: _.pick(config, hawkOptionKeys)}
     );
-    console.log(config);
     start('hawk', config);
 }

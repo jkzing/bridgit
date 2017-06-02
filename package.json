@@ -1,6 +1,6 @@
 {
   "name": "bridgit",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "description": "A authorization proxy server",
   "main": "bin/bridgit.js",
   "scripts": {

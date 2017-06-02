@@ -4,6 +4,7 @@
 
 const hawk = require('hawk');
 const request = require('koa-request');
+const logger = require('../utils/logger');
 
 function createHawkHeader(request, origin, options={}) {
     let contentType, payload = '';
@@ -58,9 +59,13 @@ module.exports = function hawkMiddleWare(config) {
             options.json = req.body;
         }
 
-        console.log(`${req.method}ing request to: ${options.url}`);
+        logger.info(`Sending ${req.method} request to ${options.url}.`, true);
         let response = yield request(options);
-        console.log(`Request complete with ${response.statusCode} ${response.statusMessage}`);
+        if (Math.floor(response.statusCode / 100) === 2) {
+            logger.success('Request success, sending back response.', true);
+        } else {
+            logger.error(`Request failed with status ${response.statusCode} ${response.statusMessage}.`, true);
+        }
         let responseBody;
         try {
             responseBody = JSON.parse(response.body);

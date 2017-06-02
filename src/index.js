@@ -9,6 +9,7 @@
  *   --hawk-id
  *   --hawk-key
  */
+require('console.table');
 const bridgit = require('commander');
 const hawkCommand = require('./commands/hawk');
 const configCommand = require('./commands/config');

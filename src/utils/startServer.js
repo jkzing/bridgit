@@ -2,6 +2,7 @@
 
 const koa = require('koa');
 const bodyParser = require('koa-bodyparser');
+const logger = require('./logger');
 
 module.exports = function start(module, config) {
     let app = koa();
@@ -10,5 +11,7 @@ module.exports = function start(module, config) {
     let middleware = require(`../middlewares/${module}`);
     app.use(middleware(config));
 
-    app.listen(config.port || 3000);
+    let port = config.port || 3000;
+    app.listen(port);
+    logger.colorful(`> ${module.toUpperCase()} proxy server start listening on http://127.0.0.1:${port}`);
 }

@@ -50,7 +50,7 @@ bridgit hawk -i your_id -k your_key -o http://www.google.com
 ```
 Will start hawk server with `your_id` and `your_key`, then proxy request to `http://www.google.com`.
 
-You can alos use `bridgit hawk --help` to view them.
+You can also use `bridgit hawk --help` to view available options.
 
 
 ## config
@@ -59,18 +59,19 @@ You can alos use `bridgit hawk --help` to view them.
 or
 `bridgit config get <key>`
 
-Here `key` can be any support option for proxy server command (like hawk).
+Here `key` can be any support option in proxy server command (like hawk).
 
 ``` bash
-bridgit config set id your_id # store your_id in config file
-bridgit config set port 4000 # store port in config file
-bridgit config get port # print port in config file
+bridgit config set id your_id # store your_id as id in config file
+bridgit config set port 4000 # store 4000 as port in config file
+bridgit config get port # print current port config
 bridgit config get # print all key-values in config file
 ```
 
 > NOTE: You should only use fullname for options to set config, shortland name will not take effect.
 
-About priority, the options' priority is higher than config file. For example:
+
+PS: The options' priority is higher than config file. For example:
 
 ``` bash
 bridgit config set id id_config

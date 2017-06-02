@@ -3,9 +3,9 @@
 [![npm version](https://badge.fury.io/js/bridgit.svg)](https://badge.fury.io/js/bridgit)
 [![Build Status](https://travis-ci.org/jkzing/bridgit.svg?branch=master)](https://travis-ci.org/jkzing/bridgit)
 
-bridgit is a proxy server to forward normal http request to an authorized server.
+bridgit is a proxy server intend to forward http request to a server with authentication.
 
-With different authorization protocol. (support hawk now)
+Support different authentication protocol. (hawk for now)
 
 # Installation
 
@@ -14,62 +14,70 @@ npm install -g bridgit
 ```
 *You may need to run npm install under root access.*
 
-# Usage
+# Commands
 
-`bridgit` in shell to start the proxy server.
+## hawk
 
-Initially, the proxy take request from http://127.0.0.1:3000, and encrypt the request with a auth library, then forward it to the same path at http://127.0.0.1:8000.
+Simply use follow command to start the proxy server for hawk authentication.
 
-So you can call your rest service at http://127.0.0.1:3000/api_url now.
-
-# Configuration
-
-There are two ways to configure bridgit.
-
-### global configurations
-
-Run `bridgit config [--key=value]` in shell to make your configuration global.
-
-Example:
-```shell
-bridgit config --origin=http://www.kezaihui.com --port=5000
-```
-Then origin http://www.kezaihui.com and port 5000 will be written to configuration file, and will take effect afterwards.
-
-### runtime configurations
-
-You can also use arguments after bridgit command to specify configurations.
-
-```shell
-bridgit --origin=http://www.kezaihui.com --port=5000
-```
-Runtime configurations will only take effect in the single runtime you specity it.
-
-
-
-**Please notice that for auth library specified configuration, you should add the library name as prefix of the arguments.**
-
-```shell
-# global configurations
-bridgit config --hawk-id=your_id_here --hawk-key=your_key_here
-
-# runtime configurations
-bridgit --hawk-id=your_id_here --hawk-key=your_key_here
+``` bash
+bridgit hawk
 ```
 
-#### supported configurations
+Initially, the proxy server would intercept request from http://127.0.0.1:3000, 
+encrypt the request with hawk, 
+add the authentication artifact in request header as `Authorization`,
+and foward it to the same uri at http://127.0.0.1:8000.
 
-```shell
-bridgit <config> [--origin=] # origin to forward
-    [--port=] # server port for bridgit to start with
-    [--prefix=] # auth header prefix
-    [--hawk-id=] # hawk credentials id
-    [--hawk-key=] # hawk crendentials key
-    [-hawk-algorithm=] # hawk algorithm
-    [-hawk-encryptPayload=] # should include payload when encrypt
+So you can call your RESTful API at http://127.0.0.1:3000/your_api_uri now.
+
+There are several options you can use to customize the proxy server:
+
+``` bash
+bridgit hawk 
+    [-o, --origin=] # origin to forward
+    [-p, --port=] # server port for bridgit to listen on
+    [-P, --prefix=] # auth header prefix
+    [-i, --id=] # hawk credentials id
+    [-k, --key=] # hawk crendentials key
+    [-a, --algorithm=] # hawk algorithm
+    [-E, --encrypt-payload=] # should include payload when encrypt
 ```
+
+eg. 
+``` bash
+bridgit hawk -i your_id -k your_key -o http://www.google.com
+```
+Will start hawk server with `your_id` and `your_key`, then proxy request to `http://www.google.com`.
+
+You can alos use `bridgit hawk --help` to view them.
+
+
+## config
+
+`bridgit config set <key> <value>`
+or
+`bridgit config get <key>`
+
+Here `key` can be any support option for proxy server command (like hawk).
+
+``` bash
+bridgit config set id your_id # store your_id in config file
+bridgit config set port 4000 # store port in config file
+bridgit config get port # print port in config file
+bridgit config get # print all key-values in config file
+```
+
+> NOTE: You should only use fullname for options to set config, shortland name will not take effect.
+
+About priority, the options' priority is higher than config file. For example:
+
+``` bash
+bridgit config set id id_config
+bridgit hawk --id=id_option
+```
+Will result in proxy server using `id_options` as hawk id.
 
 # Todo
 
-* more user friendly log
 * more flexible configuration

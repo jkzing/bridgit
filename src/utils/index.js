@@ -1,14 +1,16 @@
-'use strict';
-
 module.exports = {
-    clearUndefined,
+    clearEmpty,
 };
 
-function clearUndefined(obj) {
+function clearEmpty(obj) {
     if (typeof obj !== 'object') throw new Error('argument expected to be an object!');
     let o = Object.assign({}, obj);
+    let val;
     for (let key in o) {
-        if (!o[key]) delete o[key];
+        val = o[key];
+        if (val === null || val === undefined) {
+            delete o[key];
+        }
     }
     return o;
 }

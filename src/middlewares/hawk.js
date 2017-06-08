@@ -70,7 +70,6 @@ module.exports = function hawkMiddleWare(config) {
         try {
             responseBody = JSON.parse(response.body);
         } catch (e) {
-            console.error(e);
             responseBody = response.body;
         }
 

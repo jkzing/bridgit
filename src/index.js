@@ -1,21 +1,20 @@
 'use strict';
 
-/**
- * Arguments:
- *   --port
- *   --origin
- *   --prefix
- *   --algorithm
- *   --hawk-id
- *   --hawk-key
- */
 require('console.table');
 const bridgit = require('commander');
 const hawkCommand = require('./commands/hawk');
 const configCommand = require('./commands/config');
+const pkg = require('../package.json');
+
+/**
+ * possibly refactor solution:
+ * spawn each command here as a separete program
+ * when it's get complicated
+ * https://github.com/tj/commander.js/issues/1
+ */
 
 bridgit
-    .version('0.2.3');
+    .version('v' + pkg.version);
 
 bridgit
     .command('hawk')
@@ -27,11 +26,12 @@ bridgit
     .option('-a, --algorithm [algorithm]', 'Which algorithm should hawk use to encrypt')
     .option('-P, --prefix [prefix]', 'Prefix string that should be added to request header')
     .option('-E, --encrypt-payload', 'Should hawk encrypt request body')
+    .option('-c, --config [config]', 'With a specified config file path')
     .action(hawkCommand);
 
 bridgit
     .command('config <cmd> [key] [value]')
-    .description('get or set configurations')
+    .description('configuration operations, use --help to checkout')
     .action(configCommand);
 
 

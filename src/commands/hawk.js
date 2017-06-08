@@ -1,21 +1,56 @@
 const _ = require('lodash');
+const path = require('path');
+const os = require('os');
 const start = require('../utils/startServer');
-const loadConf = require('../utils/loadConf');
+const merge = require('../utils/mergeConfiguration');
+const logger = require('../utils/logger');
+const {hawkOptionKeys, configKeys} = require('../constants');
 
-const hawkOptionKeys = ['id', 'key', 'algorithm', 'encryptPayload'];
-const optionKeys = ['id', 'key', 'origin', 'port', 'algorithm', 'prefix', 'encryptPayload'];
+const invalidJsonReg = /JSON/;
 
 module.exports = function action(options) {
     if (typeof options !== 'object') {
         throw new Error('Wrong command arguments provided.');
     }
 
-    let config = _.pick(options, optionKeys);
-    config = loadConf(config);
-    config = Object.assign(
-        {}, 
-        _.omit(config, hawkOptionKeys), 
-        {options: _.pick(config, hawkOptionKeys)}
-    );
-    start('hawk', config);
+    let configurations = [];
+
+    let configFile = options.config;
+    if (configFile) {
+        try {
+            let filePath = path.resolve(configFile);
+            configFile = require(filePath);
+        } catch (e) {
+            if (e.code === 'MODULE_NOT_FOUND') {
+                logger.error(`Can not file config file at ${options.config}.`);
+                return;
+            } else if (e.message && invalidJsonReg.test(e.message)) {
+                logger.error(e.message);
+                return;
+            } else {
+                logger.warn(
+                    'Unknown error happened when parsing config file, ' +
+                    `config file ${options.config} will be omitted.`
+                );
+            }
+        }
+    }
+
+    if (typeof configFile === 'object') {
+        configurations.push(configFile);
+    }
+
+    // pick up configuration relavent options
+    configurations.push(_.pick(options, configKeys));
+
+    let config = merge.apply(null, configurations);
+
+    const [req, opts] = [
+        _.omit(config, hawkOptionKeys),
+        _.pick(config, hawkOptionKeys)
+    ];
+
+    req.options = opts;
+
+    start('hawk', req);
 }

@@ -2,7 +2,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const logger = require('../utils/logger');
 
-const configFilePath = require('../constants').configFilePath;
+const {configFilePath, configKeys} = require('../constants');
 
 let commands = {
     get(key, value, options) {
@@ -36,6 +36,21 @@ let commands = {
         );
         fs.writeFileSync(configFilePath, JSON.stringify(config), {
             encoding: 'utf-8',
+        });
+    },
+    new(filePath, omit, options) {
+        let data = _.zipObject(configKeys, Array(configKeys.length).fill(null));
+        if (!/.json$/.test(filePath)) {
+            filePath = filePath + '.json';
+        }
+        fs.writeFile(filePath, JSON.stringify(data, null, 4), {
+            encoding: 'utf-8',
+        }, (err) => {
+            if (err) {
+                logger.error(err.message);
+                return;
+            }
+            logger.success(`${filePath} created successfully.`);
         });
     }
 }

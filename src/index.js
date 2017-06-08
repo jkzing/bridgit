@@ -1,21 +1,20 @@
 'use strict';
 
-/**
- * Arguments:
- *   --port
- *   --origin
- *   --prefix
- *   --algorithm
- *   --hawk-id
- *   --hawk-key
- */
 require('console.table');
 const bridgit = require('commander');
 const hawkCommand = require('./commands/hawk');
 const configCommand = require('./commands/config');
+const pkg = require('../package.json');
+
+/**
+ * possibly refactor solution:
+ * spawn each command here as a separete program
+ * when it's get complicated
+ * https://github.com/tj/commander.js/issues/1
+ */
 
 bridgit
-    .version('0.2.3');
+    .version('v' + pkg.version);
 
 bridgit
     .command('hawk')

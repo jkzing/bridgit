@@ -1,9 +1,8 @@
 const _ = require('lodash');
-const path = require('path');
 const os = require('os');
 const configFilePath = require('../constants').configFilePath;
 
-const defaultsPath = path.resolve('../config/defaults.json');
+const defaultsPath = require.resolve('../config/defaults.json');
 
 // function validateArgs(args) {
 //     let len = args.length;

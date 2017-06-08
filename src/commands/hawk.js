@@ -34,7 +34,11 @@ module.exports = function action(options) {
 
     let config = merge.apply(null, configurations);
 
-    const [req, opts] = _.partition(config, (v, k) => hawkOptionKeys.indexOf(k) < 0)
+    const [req, opts] = [
+        _.omit(config, hawkOptionKeys),
+        _.pick(config, hawkOptionKeys)
+    ];
+
     req.options = opts;
 
     start('hawk', req);

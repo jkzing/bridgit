@@ -11,8 +11,7 @@ let commands = {
         try {
             config = require(configFilePath);
         } catch(e) {
-            console.log(e, configFilePath)
-            logger.error('No configuration file found, or configuration file is not valid JSON');
+            logger.error('No configuration file found, or configuration file is not valid JSON.');
             return;
         }
         if (key) {
@@ -25,10 +24,12 @@ let commands = {
     },
     set(key, value, options) {
         if (!key) return;
-        let config = {};
+        let config;
         try {
             config = require(configFilePath);
-        } catch(e) {}
+        } catch(e) {
+            config = {}
+        }
         config = _.merge(
             config,
             {[key]: value}
@@ -42,7 +43,7 @@ let commands = {
 
 module.exports = function action(cmd, key, value, options) {
     if (!commands.hasOwnProperty(cmd)) {
-        error(`Command argument should be one of ${Object.keys(commands)}.`)
+        logger.error(`Command argument should be one of ${Object.keys(commands).join(', ')}.`)
         return;
     }
 

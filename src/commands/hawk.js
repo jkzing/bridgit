@@ -3,9 +3,12 @@ const path = require('path');
 const os = require('os');
 const start = require('../utils/startServer');
 const merge = require('../utils/mergeConfiguration');
+const logger = require('../utils/logger');
 
 const hawkOptionKeys = ['id', 'key', 'algorithm', 'encryptPayload'];
 const configKeys = ['id', 'key', 'origin', 'port', 'algorithm', 'prefix', 'encryptPayload'];
+
+const invalidJsonReg = /JSON/;
 
 module.exports = function action(options) {
     if (typeof options !== 'object') {
@@ -19,9 +22,19 @@ module.exports = function action(options) {
         try {
             let filePath = path.resolve(configFile);
             configFile = require(filePath);
-            console.log(configFile);
         } catch (e) {
-            console.error(e);
+            if (e.code === 'MODULE_NOT_FOUND') {
+                logger.error(`Can not file config file at ${options.config}.`);
+                return;
+            } else if (e.message && invalidJsonReg.test(e.message)) {
+                logger.error(e.message);
+                return;
+            } else {
+                logger.warn(
+                    'Unknown error happened when parsing config file, ' +
+                    `config file ${options.config} will be omitted.`
+                );
+            }
         }
     }
 

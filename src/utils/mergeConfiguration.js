@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const path = require('path');
 const os = require('os');
-const configFileName = require('../constants').configFileName;
+const configFilePath = require('../constants').configFilePath;
 
 const defaultsPath = path.resolve('../config/defaults.json');
 
@@ -14,10 +14,9 @@ const defaultsPath = path.resolve('../config/defaults.json');
  * no need for deep merge for now
  */
 module.exports = function merge(...args) {
-    let configPath = path.join(os.homedir(), configFileName);
     let storedConf, defaultsConf;
     try {
-        storedConf = require(configPath);
+        storedConf = require(configFilePath);
         defaultsConf = require(defaultsPath);
     } catch (e) {}
     storedConf = storedConf || {};

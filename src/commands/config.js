@@ -2,12 +2,19 @@ const _ = require('lodash');
 const fs = require('fs');
 const logger = require('../utils/logger');
 
-const configPath = require.resolve('../config/config.json');
+const configFilePath = require('../constants').configFilePath;
 
 let commands = {
     get(key, value, options) {
         // value should be ommited
-        let config = require(configPath);
+        let config
+        try {
+            config = require(configFilePath);
+        } catch(e) {
+            console.log(e, configFilePath)
+            logger.error('No configuration file found, or configuration file is not valid JSON');
+            return;
+        }
         if (key) {
             logger.config({
                 [key]: config[key],
@@ -18,11 +25,15 @@ let commands = {
     },
     set(key, value, options) {
         if (!key) return;
-        let nextConfig = _.merge(
-            require(configPath), 
+        let config = {};
+        try {
+            config = require(configFilePath);
+        } catch(e) {}
+        config = _.merge(
+            config,
             {[key]: value}
         );
-        fs.writeFileSync(configPath, JSON.stringify(nextConfig), {
+        fs.writeFileSync(configFilePath, JSON.stringify(config), {
             encoding: 'utf-8',
         });
     }

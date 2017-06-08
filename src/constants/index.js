@@ -1,3 +1,6 @@
+const path = require('path');
+const os = require('os');
+
 module.exports = {
-    configFileName: '.bridgit.json'
+    configFilePath: path.join(os.homedir(), '.bridgit.json')
 }

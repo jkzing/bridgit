@@ -4,9 +4,7 @@ const os = require('os');
 const start = require('../utils/startServer');
 const merge = require('../utils/mergeConfiguration');
 const logger = require('../utils/logger');
-
-const hawkOptionKeys = ['id', 'key', 'algorithm', 'encryptPayload'];
-const configKeys = ['id', 'key', 'origin', 'port', 'algorithm', 'prefix', 'encryptPayload'];
+const {hawkOptionKeys, configKeys} = require('../constants');
 
 const invalidJsonReg = /JSON/;
 

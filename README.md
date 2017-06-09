@@ -12,7 +12,6 @@ Support different authentication protocol. (hawk for now)
 ```
 npm install -g bridgit
 ```
-*You may need to run npm install under root access.*
 
 # Commands
 
@@ -24,8 +23,8 @@ Simply use follow command to start the proxy server for hawk authentication.
 bridgit hawk
 ```
 
-Initially, the proxy server would intercept request from http://127.0.0.1:3000, 
-encrypt the request with hawk, 
+Initially, the proxy server would intercept request from http://127.0.0.1:3000,
+encrypt the request with hawk,
 add the authentication artifact in request header as `Authorization`,
 and foward it to the same uri at http://127.0.0.1:8000.
 
@@ -34,7 +33,7 @@ So you can call your RESTful API at http://127.0.0.1:3000/your_api_uri now.
 There are several options you can use to customize the proxy server:
 
 ``` bash
-bridgit hawk 
+bridgit hawk
     [-o, --origin=] # origin to forward
     [-p, --port=] # server port for bridgit to listen on
     [-P, --prefix=] # auth header prefix
@@ -42,18 +41,32 @@ bridgit hawk
     [-k, --key=] # hawk crendentials key
     [-a, --algorithm=] # hawk algorithm
     [-E, --encrypt-payload=] # should include payload when encrypt
+    [-c, --config=] # With a specified config file path
 ```
+You can also use `bridgit hawk --help` to view available options.
 
-eg. 
+Here are some usage examples:
+
+### Use with options
 ``` bash
 bridgit hawk -i your_id -k your_key -o http://www.google.com
 ```
 Will start hawk server with `your_id` and `your_key`, then proxy request to `http://www.google.com`.
 
-You can also use `bridgit hawk --help` to view available options.
+### Use with config file
+``` bash
+bridgit hawk -c ~/config.json
+```
+Will load ~/config.json as your configuration, and keep global config as defaults.
+
+> NOTE: the config file you are using is considered in JSON format, please ensure that.
 
 
 ## config
+
+> From 1.1.0, default configuration file will be generated under your $HOME directory, named .bridgit.json.
+
+### set/get global configurations
 
 `bridgit config set <key> <value>`
 or
@@ -79,6 +92,13 @@ bridgit hawk --id=id_option
 ```
 Will result in proxy server using `id_options` as hawk id.
 
+### generate an empty config file
+``` bash
+bridgit config new ~/your_config.json
+```
+Will create a new empty config file @~/your_config.json.
+
 # Todo
 
-* more flexible configuration
+* Test cases coverage
+* Support OAuth2

@@ -48,7 +48,7 @@ describe('hawk command', () => {
     });
 
     afterAll(() => {
-        jest.unmock(startServer);
+        jest.unmock('../../../src/utils/startServer');
         jset.unmock(configPath);
     });
 

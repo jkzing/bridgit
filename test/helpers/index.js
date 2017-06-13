@@ -7,3 +7,5 @@ exports.requireSrc = (srcPath) => {
 exports.resolveSrc = (srcPath) => {
     return path.resolve('src/' + srcPath);
 }
+
+exports.sleep = (delay=200) => new Promise((resolve) => setTimeout(resolve, delay));

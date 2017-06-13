@@ -1,4 +1,4 @@
 node_modules/
 npm-debug*
 coverage
-tmp.bridgit*
+tmp.*

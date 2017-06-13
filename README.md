@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/bridgit.svg)](https://badge.fury.io/js/bridgit)
 [![Build Status](https://travis-ci.org/jkzing/bridgit.svg?branch=master)](https://travis-ci.org/jkzing/bridgit)
+[![Coverage Status](https://coveralls.io/repos/github/jkzing/bridgit/badge.svg?branch=master)](https://coveralls.io/github/jkzing/bridgit?branch=master)
 
 bridgit is a proxy server intend to forward http request to a server with authentication.
 

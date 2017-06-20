@@ -1,6 +1,4 @@
 require('assert');
-const path = require('path');
-const fs = require('fs');
 const {requireSrc} = require('../../helpers');
 
 const {clearEmpty} = requireSrc('utils');

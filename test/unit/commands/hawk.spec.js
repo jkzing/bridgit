@@ -53,7 +53,6 @@ describe('hawk command', () => {
 
     afterAll(() => {
         jest.unmock('../../../src/utils/startServer');
-        jset.unmock(configFilePath);
     });
 
     it('should parse options correctly', () => {

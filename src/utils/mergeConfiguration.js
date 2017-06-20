@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const fs = require('fs');
 const os = require('os');
 const configFilePath = require('../constants').configFilePath;
 const {clearEmpty} = require('./index');
@@ -20,9 +21,11 @@ module.exports = function merge(...args) {
     }
     let storedConf, defaultsConf;
     try {
-        storedConf = require(configFilePath);
-        defaultsConf = require(defaultsPath);
-    } catch (e) {}
+        let configData = fs.readFileSync(configFilePath, {encoding: 'utf-8'});
+        let defaultsData = fs.readFileSync(defaultsPath, {encoding: 'utf-8'});
+        storedConf = JSON.parse(configData);
+        defaultsConf = JSON.parse(defaultsData);
+    } catch (e) {throw e}
     defaultsConf = defaultsConf || {};
     // ignore properties that are empty (null)
     storedConf = clearEmpty(storedConf || {});

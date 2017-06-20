@@ -9,7 +9,8 @@ let commands = {
         // value should be ommited
         let config
         try {
-            config = require(configFilePath);
+            let configData = fs.readFileSync(configFilePath, {encoding: 'utf-8'});
+            config = JSON.parse(configData);
         } catch(e) {
             logger.error('No configuration file found, or configuration file is not valid JSON.');
             return;
@@ -23,10 +24,12 @@ let commands = {
         }
     },
     set(key, value, options) {
+        /* istanbul ignore if */
         if (!key) return;
         let config;
         try {
-            config = require(configFilePath);
+            let configData = fs.readFileSync(configFilePath, {encoding: 'utf-8'});
+            config = JSON.parse(configData);
         } catch(e) {
             config = {}
         }
@@ -40,6 +43,7 @@ let commands = {
     },
     new(filePath, omit, options) {
         let data = _.zipObject(configKeys, Array(configKeys.length).fill(null));
+        /* istanbul ignore if */
         if (!/.json$/.test(filePath)) {
             filePath = filePath + '.json';
         }

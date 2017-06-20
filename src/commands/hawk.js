@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 const start = require('../utils/startServer');
 const merge = require('../utils/mergeConfiguration');
@@ -19,9 +20,10 @@ module.exports = function action(options) {
     if (configFile) {
         try {
             let filePath = path.resolve(configFile);
-            configFile = require(filePath);
+            let configFileData = fs.readFileSync(filePath, {encoding: 'utf-8'});
+            configFile = JSON.parse(configFileData);
         } catch (e) {
-            if (e.code === 'MODULE_NOT_FOUND') {
+            if (e.code === 'ENOENT') {
                 logger.error(`Can not file config file at ${options.config}.`);
                 return;
             } else if (e.message && invalidJsonReg.test(e.message)) {

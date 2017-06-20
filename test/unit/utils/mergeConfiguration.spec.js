@@ -1,7 +1,6 @@
 require('assert');
 const path = require('path');
 const fs = require('fs');
-const rimraf = require('rimraf');
 const {requireSrc} = require('../../helpers');
 
 const merge = requireSrc('utils/mergeConfiguration');

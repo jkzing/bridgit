@@ -7,7 +7,7 @@ const merge = requireSrc('utils/mergeConfiguration');
 const {configFilePath, configKeys} = requireSrc('constants');
 
 
-describe('mergeConfiguration', () => {
+describe('util mergeConfiguration', () => {
     beforeEach(() => {
         try {
             fs.unlinkSync(configFilePath);

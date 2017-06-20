@@ -11,17 +11,25 @@ const {configFilePath, configKeys} = requireSrc('constants');
 
 
 describe('config command', () => {
-    let error, warn, config;
+    let error, warn, config, success;
     beforeAll(() => {
         error = jest.spyOn(logger, 'error');
         warn = jest.spyOn(logger, 'warn');
         config = jest.spyOn(logger, 'config');
+        success = jest.spyOn(logger, 'success');
+    });
+
+    beforeEach(() => {
+        try {
+            fs.unlinkSync(configFilePath);
+        } catch(e) {}
     });
 
     afterEach(() => {
         error.mockReset();
         warn.mockReset();
         config.mockReset();
+        success.mockReset();
     });
 
     it('should warn when sub-command is not valid', () => {
@@ -58,10 +66,10 @@ describe('config command', () => {
         await sleep(200);
         let config = require(path.resolve('tmp.new.json'));
         expect(Object.keys(config)).toEqual(configKeys);
+        expect(success).toHaveBeenCalled();
     });
 
     it('should work when config file can not be loaded', () => {
-        rimraf.sync(configFilePath);
 
         expect(() => {
             configAction('get', 'id', null);

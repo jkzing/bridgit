@@ -17,18 +17,22 @@ function colorful(msg, color='yellow', timestamp=false) {
 }
 
 function info(msg, timestamp=false) {
+    /* istanbul ignore next */
     colorful(msg, 'cyan', timestamp);
 }
 
 function warn(msg, timestamp=false) {
+    /* istanbul ignore next */
     colorful(msg, 'grey', timestamp);
 }
 
 function error(msg, timestamp=false) {
+    /* istanbul ignore next */
     colorful(msg, 'red', timestamp);
 }
 
 function success(msg, timestamp=false) {
+    /* istanbul ignore next */
     colorful(msg, 'green', timestamp);
 }
 

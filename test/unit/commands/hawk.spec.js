@@ -6,7 +6,7 @@ const fs = require('fs');
 const {requireSrc} = require('../../helpers');
 
 const hawkAction = requireSrc('commands/hawk');
-const configPath = path.join(os.homedir(), '.bridgit.json');
+const {configFilePath} = requireSrc('constants');
 
 let options, middleware;
 jest.mock('../../../src/utils/startServer', () => {
@@ -42,14 +42,17 @@ describe('hawk command', () => {
     beforeEach(() => {
         options = null;
         middleware = null;
-        jest.doMock(configPath, () => {
-            return {};
-        }, {virtual: true});
+        try {
+            fs.writeFileSync(
+                configFilePath,
+                JSON.stringify({}),
+                {encoding: 'utf-8'}
+            );
+        } catch(e) {}
     });
 
     afterAll(() => {
         jest.unmock('../../../src/utils/startServer');
-        jset.unmock(configPath);
     });
 
     it('should parse options correctly', () => {

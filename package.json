@@ -55,6 +55,5 @@
     "npm": ">= 3.0.0"
   },
   "devDependencies": {
-    "rimraf": "^2.6.1"
   }
 }

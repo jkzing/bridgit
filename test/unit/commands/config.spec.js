@@ -2,7 +2,6 @@ require('assert');
 
 const path = require('path');
 const fs = require('fs');
-const rimraf = require('rimraf');
 const {requireSrc, resolveSrc, sleep} = require('../../helpers');
 
 const configAction = requireSrc('commands/config');
@@ -11,17 +10,25 @@ const {configFilePath, configKeys} = requireSrc('constants');
 
 
 describe('config command', () => {
-    let error, warn, config;
+    let error, warn, config, success;
     beforeAll(() => {
         error = jest.spyOn(logger, 'error');
         warn = jest.spyOn(logger, 'warn');
         config = jest.spyOn(logger, 'config');
+        success = jest.spyOn(logger, 'success');
+    });
+
+    beforeEach(() => {
+        try {
+            fs.unlinkSync(configFilePath);
+        } catch(e) {}
     });
 
     afterEach(() => {
         error.mockReset();
         warn.mockReset();
         config.mockReset();
+        success.mockReset();
     });
 
     it('should warn when sub-command is not valid', () => {
@@ -29,7 +36,7 @@ describe('config command', () => {
         expect(error).toHaveBeenCalled();
     });
 
-    it('should print specified key/value with <get> sub-command', () => {
+    it('should print specified key/value with <get>', () => {
         fs.writeFileSync(
             configFilePath,
             JSON.stringify({id: 'foo', key: 'bar'}),
@@ -45,27 +52,32 @@ describe('config command', () => {
         expect(config).toHaveBeenCalledWith({id: 'foo', key: 'bar'});
     });
 
-    it('should save key/value in config file with <set> sub-command', () => {
+    it('should save key/value in config file with <set>', () => {
         let foo = 'foo' + Date.now();
         configAction('set', 'id', foo);
-        let config = require(configFilePath);
+        let config = fs.readFileSync(configFilePath, {encoding: 'utf-8'});
+        config = JSON.parse(config);
         expect(config.id).toBe(foo);
     });
 
-    it('should generate an sample config file with <new> sub-command', async () => {
+    it('should generate an sample config file with <new>', async () => {
         configAction('new', 'tmp.new');
         // write file here is async function, so...
         await sleep(200);
-        let config = require(path.resolve('tmp.new.json'));
+        let config = fs.readFileSync(path.resolve('tmp.new.json'), {encoding: 'utf-8'});
+        config = JSON.parse(config);
         expect(Object.keys(config)).toEqual(configKeys);
+        expect(success).toHaveBeenCalled();
     });
 
-    it('should work when config file can not be loaded', () => {
-        rimraf.sync(configFilePath);
+    it('should warn when using <get> with config file can not be loaded', () => {
+        configAction('get', 'id', null);
+        expect(error).toHaveBeenCalled();
+    });
 
-        expect(() => {
-            configAction('get', 'id', null);
-            configAction('set', 'id', 'foo');
-        }).not.toThrow();
+    it('should create new config file with <set> when it can not be found', () => {
+        configAction('set', 'id', 'foo');
+        let config = fs.readFileSync(configFilePath, {encoding: 'utf-8'});
+        expect(config).toEqual(JSON.stringify({id: 'foo'}))
     });
 });

@@ -72,12 +72,19 @@ module.exports = function hawkMiddleWare(config) {
         }
 
         logger.info(`Sending ${req.method} request to ${options.url}.`, true);
-        let response = await endpoint(options);
+        let response
+        try {
+            response = await endpoint(options);
+        } catch (e) {
+            response = e.response
+        }
+
         if (Math.floor(response.status / 100) === 2) {
             logger.success('Request success, sending back response.', true);
         } else {
-            logger.error(`Request failed with status ${response.statusCode} ${response.statusMessage}.`, true);
+            logger.error(`Request failed with status ${response.status} ${response.statusText}.`, true);
         }
+
         let responseBody;
         try {
             responseBody = JSON.parse(response.data);

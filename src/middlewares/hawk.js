@@ -55,9 +55,16 @@ module.exports = function hawkMiddleWare(config) {
             method: req.method,
             url: config.origin + requestUrl,
             headers: {
-                'Content-Type': req.contentType,
                 'Authorization': `${config.prefix || ''}${authorization}`
             }
+        }
+
+        // set content type if it has one
+        const contentType = req.headers['content-type'];
+        if (contentType) {
+            options.headers['content-type'] = contentType;
+        } else {
+            options.headers['content-type'] = 'text/plain';
         }
 
         if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {

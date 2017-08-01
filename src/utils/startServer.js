@@ -1,11 +1,11 @@
 'use strict';
 
-const koa = require('koa');
+const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const logger = require('./logger');
 
 module.exports = function start(module, config) {
-    let app = koa();
+    let app = new Koa();
 
     app.use(bodyParser());
     let middleware = require(`../middlewares/${module}`);

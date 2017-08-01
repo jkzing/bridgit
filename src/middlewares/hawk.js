@@ -3,7 +3,7 @@
  */
 
 const hawk = require('hawk');
-const request = require('koa-request');
+const axios = require('axios');
 const logger = require('../utils/logger');
 
 function createHawkHeader(request, origin, options={}) {
@@ -41,8 +41,12 @@ function createHawkHeader(request, origin, options={}) {
 }
 
 module.exports = function hawkMiddleWare(config) {
-    return function* (next) {
-        let req = this.request;
+    const endpoint = axios.create({
+        baseURL: config.origin,
+        timeout: 3000
+    });
+    return async function (ctx, next) {
+        let req = ctx.request;
         let requestUrl = req.url;
 
         let authorization = createHawkHeader(req, config.origin, config.options);
@@ -55,25 +59,40 @@ module.exports = function hawkMiddleWare(config) {
             }
         }
 
+        // set content type if it has one
+        const contentType = req.headers['content-type'];
+        if (contentType) {
+            options.headers['content-type'] = contentType;
+        } else {
+            options.headers['content-type'] = 'text/plain';
+        }
+
         if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-            options.json = req.body;
+            options.data = req.data;
         }
 
         logger.info(`Sending ${req.method} request to ${options.url}.`, true);
-        let response = yield request(options);
-        if (Math.floor(response.statusCode / 100) === 2) {
-            logger.success('Request success, sending back response.', true);
-        } else {
-            logger.error(`Request failed with status ${response.statusCode} ${response.statusMessage}.`, true);
-        }
-        let responseBody;
+        let response
         try {
-            responseBody = JSON.parse(response.body);
+            response = await endpoint(options);
         } catch (e) {
-            responseBody = response.body;
+            response = e.response
         }
 
-        this.status = response.statusCode;
-        this.body = responseBody;
+        if (Math.floor(response.status / 100) === 2) {
+            logger.success('Request success, sending back response.', true);
+        } else {
+            logger.error(`Request failed with status ${response.status} ${response.statusText}.`, true);
+        }
+
+        let responseBody;
+        try {
+            responseBody = JSON.parse(response.data);
+        } catch (e) {
+            responseBody = response.data;
+        }
+
+        ctx.status = response.status;
+        ctx.body = responseBody;
     }
 }

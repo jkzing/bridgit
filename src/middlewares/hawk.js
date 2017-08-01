@@ -3,7 +3,7 @@
  */
 
 const hawk = require('hawk');
-const request = require('koa-request');
+const axios = require('axios');
 const logger = require('../utils/logger');
 
 function createHawkHeader(request, origin, options={}) {
@@ -41,8 +41,12 @@ function createHawkHeader(request, origin, options={}) {
 }
 
 module.exports = function hawkMiddleWare(config) {
-    return function* (next) {
-        let req = this.request;
+    const endpoint = axios.create({
+        baseURL: config.origin,
+        timeout: 3000
+    });
+    return async function (ctx, next) {
+        let req = ctx.request;
         let requestUrl = req.url;
 
         let authorization = createHawkHeader(req, config.origin, config.options);
@@ -51,29 +55,30 @@ module.exports = function hawkMiddleWare(config) {
             method: req.method,
             url: config.origin + requestUrl,
             headers: {
+                'Content-Type': req.contentType,
                 'Authorization': `${config.prefix || ''}${authorization}`
             }
         }
 
         if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-            options.json = req.body;
+            options.data = req.data;
         }
 
         logger.info(`Sending ${req.method} request to ${options.url}.`, true);
-        let response = yield request(options);
-        if (Math.floor(response.statusCode / 100) === 2) {
+        let response = await endpoint(options);
+        if (Math.floor(response.status / 100) === 2) {
             logger.success('Request success, sending back response.', true);
         } else {
             logger.error(`Request failed with status ${response.statusCode} ${response.statusMessage}.`, true);
         }
         let responseBody;
         try {
-            responseBody = JSON.parse(response.body);
+            responseBody = JSON.parse(response.data);
         } catch (e) {
-            responseBody = response.body;
+            responseBody = response.data;
         }
 
-        this.status = response.statusCode;
-        this.body = responseBody;
+        ctx.status = response.status;
+        ctx.body = responseBody;
     }
 }

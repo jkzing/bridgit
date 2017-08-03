@@ -43,7 +43,7 @@ function createHawkHeader(request, origin, options={}) {
 module.exports = function hawkMiddleWare(config) {
     const endpoint = axios.create({
         baseURL: config.origin,
-        timeout: 3000
+        timeout: 3600 * 1000
     });
     return async function (ctx, next) {
         let req = ctx.request;

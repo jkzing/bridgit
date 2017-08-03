@@ -68,7 +68,7 @@ module.exports = function hawkMiddleWare(config) {
         }
 
         if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-            options.data = req.data;
+            options.data = req.body;
         }
 
         logger.info(`Sending ${req.method} request to ${options.url}.`, true);
